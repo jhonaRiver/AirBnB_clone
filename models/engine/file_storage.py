@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from models.base_model import BaseModel
+import json
 
 
 class FileStorage:
@@ -14,4 +15,11 @@ class FileStorage:
         FileStorage.__objects["{}.{}".format(object_class_name, obj.id)] = obj
 
     def save(self):
-        object_dictionary = FileStorage.__objects
+        object_dictionary_save = {}
+        with open(self.__file_path, 'w') as f:
+            for key, value in self.__objects.items():
+                object_dictionary_save[key] = value.to_dict()
+            json.dump(object_dictionary_save, f)
+
+    def reload(self):
+        pass
