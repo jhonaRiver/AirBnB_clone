@@ -12,7 +12,13 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     allowed_classes = {
-        'BaseModel'
+        'BaseModel',
+        'User',
+        'State',
+        'City',
+        'Place',
+        'Amenity',
+        'Review'
     }
 
     def do_quit(self, arg):
