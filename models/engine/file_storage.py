@@ -22,4 +22,12 @@ class FileStorage:
             json.dump(object_dictionary_save, f)
 
     def reload(self):
-        pass
+			try:
+				with open(FileStorage.__file_path) as f:
+					object_dictionary = json.load(f)
+					for o in object_dictionary.values():
+						class_name = o["__class__"]
+						del o["__class__"]
+						self.new(eval(class_name)(**o))
+						except FileNotFoundError:
+							return
