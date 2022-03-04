@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 import cmd
 
+from click import command
+from urllib3 import Retry
+
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.engine.file_storage import FileStorage
@@ -59,14 +62,17 @@ class HBNBCommand(cmd.Cmd):
         class_name = command[0]
         class_id = command[2]
 
-        if class_name is None:
+        if not class_name:
             print('** class name is missing **')
+            return False
 
         elif class_name not in HBNBCommand.allowed_classes:
             print("** class doesn't exist **")
+            return False
 
-        elif class_id is None:
+        elif not class_id:
             print('** instance id missing **')
+            return False
 
         key = class_name + '.' + class_id
 
@@ -75,6 +81,7 @@ class HBNBCommand(cmd.Cmd):
 
         except KeyError:
             print("** no instance found **")
+            return False
 
     def do_destroy(self, line):
 
@@ -82,14 +89,17 @@ class HBNBCommand(cmd.Cmd):
         class_name = command[0]
         class_id = command[2]
 
-        if class_name is None:
-            print("** class name is missing **")
+        if not class_name:
+            print("** class name missing **")
+            return False
 
         elif class_name not in HBNBCommand.allowed_classes:
             print("** class  doesn't exist **")
+            return False
 
         elif class_id is None:
             print("** instance id is missing **")
+            return False
 
         key = class_name + '.' + class_id
 
@@ -99,17 +109,19 @@ class HBNBCommand(cmd.Cmd):
 
         except KeyError:
             print("** no instance found **")
+            return False
 
     def do_all(self, line):
 
-        command = line.partition(" ")
-        class_name = command[0]
-        cmdlen = len(command)
         all_list = []
 
-        if cmdlen > 0 and class_name not in HBNBCommand.allowed_classes:
-            print("** class doesn't exist **")
-
+        if line:
+            split = line.split(" ")[0]
+            if line not in HBNBCommand.allowed_classes:
+                print("** class doesn't exist **")
+                return False
+            for key, value in storage._FileStorage__objects.items():
+                all_list.append(str(value))
         else:
             for key, value in storage._FileStorage__objects.items():
                 all_list.append(str(value))
@@ -121,61 +133,31 @@ class HBNBCommand(cmd.Cmd):
         command = line.partition(" ")
         class_name = command[0]
         class_id = command[2]
-        cmdlen = len(command)
+        id_part = class_id.partition(" ")
+        email = id_part[2].partition(" ")
 
-        if class_name is None:
-            print("** class name is missing **")
+        if not class_name:
+            print("** class name missing **")
             return False
 
-        if class_name not in HBNBCommand.allowed_classes:
+        elif class_name not in HBNBCommand.allowed_classes:
             print("** class doesn't exist **")
             return False
 
-        if class_id is None:
-            print("** instance id is missing **")
+        elif id_part[0] is None:
+            print("** instance id missing **")
             return False
 
-        key = class_name + '.' + class_id
-
-        try:
-            print(storage._FileStorage__objects[key])
-
-        except KeyError:
-            print("** no instance found **")
-            return False
-
-        if cmdlen == 2:
+        elif email[0] is None:
             print("** attribute name missing **")
             return False
 
-        if cmdlen == 3:
-            try:
-                type(eval(class_id)) != dict
-            except NameError:
-                print("** value missing **")
-                return False
+        elif email[2] is None:
+            print("** value missing **")
+            return False
 
-        if cmdlen == 4:
-            key = class_name + '.' + class_id
-            if class_id in FileStorage.__objects.__dict__.keys():
-                value_type = type(FileStorage.__objects.__dict__[class_id])
-                FileStorage.__dict__[class_id] = value_type(cmdlen[3])
-
-            else:
-                FileStorage.__dict__[class_id] = cmdlen[3]
-
-        elif type(eval(class_id)) == dict:
-            key = class_name + '.' + class_id
-
-            for key, value in eval(class_id).items():
-                if key in FileStorage.__objects.__dict__.keys() and type(FileStorage.__objects.__dict__[key]) in {str, int, float}:
-                    value_type = type(FileStorage.__objects.__dict__[key])
-                    FileStorage.__dict__[key] = value_type(value)
-
-                else:
-                    FileStorage.__dict__[key] = value
-
-        storage.save()
+        if email[2]:
+            setattr(self, email[0], str(email[2]))
 
 
 if __name__ == '__main__':
