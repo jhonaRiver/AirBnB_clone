@@ -116,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
             return False
 
         elif class_name not in HBNBCommand.allowed_classes:
-            print("** class  doesn't exist **")
+            print("** class doesn't exist **")
             return False
 
         elif class_id is None:
