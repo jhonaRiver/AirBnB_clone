@@ -85,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
             return False
 
     def do_destroy(self, line):
-
+        """ deletes an instance specified by user """
         command = line.partition(" ")
         class_name = command[0]
         class_id = command[2]
@@ -113,7 +113,7 @@ class HBNBCommand(cmd.Cmd):
             return False
 
     def do_all(self, line):
-
+        """ prints all strin rep of instance based or not in the class name """
         all_list = []
 
         if line:
@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
         print(all_list)
 
     def do_update(self, line):
-
+        """ Updates an instance based or not in the class name """
         command = line.partition(" ")
         class_name = command[0]
         class_id = command[2]
