@@ -3,7 +3,7 @@
 module holds entry point of command interpreter
 """
 
-from click import cmd
+import cmd
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.engine.file_storage import FileStorage
