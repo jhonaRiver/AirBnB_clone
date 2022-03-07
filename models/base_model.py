@@ -31,12 +31,17 @@ class BaseModel:
 
     def __str__(self):
         ''' string representation of a class '''
-        return ('[BaseModel] ({}) {}'.format(self.id, self.__dict__))
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)
+
+    """ Public instance method """
 
     def save(self):
         ''' saves an object to JSON file '''
         self.updated_at = datetime.utcnow()
         models.storage.save()
+
+    """ Public instance method """
 
     def to_dict(self):
         ''' returns dictionary containing key value of dictionary '''
