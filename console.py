@@ -60,18 +60,20 @@ class HBNBCommand(cmd.Cmd):
         """
         creates a new class instance of BaseModel
         """
-        command = self.parseline(line)[0]
 
-        if command is None:
+        if len(line) == 0:
             print('** class name is missing **')
 
-        elif command not in HBNBCommand.allowed_classes:
+        elif line not in HBNBCommand.allowed_classes:
             print("** class doesn't exist **")
 
-        else:
-            new_obj = eval(command)()
-            print(new_obj.id)
-            storage.save()
+        for key, value in HBNBCommand.allowed_classes.items():
+            if line == key:
+                new_obj = HBNBCommand.allowed_classes[line]()
+                print(new_obj.id)
+                storage.new(new_obj)
+                storage.save()
+        return
 
     def do_show(self, line):
         """
