@@ -56,7 +56,6 @@ class FileStorage:
         """
         deserializes the JSON file to __objects, if it exists
         """
-        object_dictionary_load = {}
         isFile = os.path.isfile(self.__file_path)
         if isFile:
             with open(self.__file_path, 'r', encoding='utf-8') as f:
