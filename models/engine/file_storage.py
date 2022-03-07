@@ -22,16 +22,22 @@ class FileStorage:
     __objects = {}
 
     def all(self):
-        """ Retunrs Dict objects """
-        return FileStorage.__objects
+        """
+        Retunrs Dict objects
+        """
+        return self.__objects
 
     def new(self, obj):
-        """ sets in __objects the obj with key <obj class name>.id """
+        """
+        sets in __objects the obj with key <obj class name>.id
+        """
         object_class_name = obj.__class__.__name__
-        FileStorage.__objects["{}.{}".format(object_class_name, obj.id)] = obj
+        self.__objects["{}.{}".format(object_class_name, obj.id)] = obj
 
     def save(self):
-        """ serializes __objects to the JSON file (path: __file_path) """
+        """
+        serializes __objects to the JSON file (path: __file_path)
+        """
         object_dictionary_save = {}
         with open(self.__file_path, 'w') as f:
             for key, value in self.__objects.items():
@@ -39,7 +45,9 @@ class FileStorage:
             json.dump(object_dictionary_save, f)
 
     def reload(self):
-        """ deserializes the JSON file to __objects, if it exists """
+        """
+        deserializes the JSON file to __objects, if it exists
+        """
         try:
             with open(FileStorage.__file_path) as f:
                 object_dictionary = json.load(f)
