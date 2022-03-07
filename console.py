@@ -2,15 +2,17 @@
 """
 module holds entry point of command interpreter
 """
+
 import cmd
-
-from click import command
-from urllib3 import Retry
-
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.engine.file_storage import FileStorage
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -20,34 +22,44 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     allowed_classes = {
-        'BaseModel',
-        'User',
-        'State',
-        'City',
-        'Place',
-        'Amenity',
-        'Review'
+        'BaseModel': BaseModel,
+        'User': User,
+        'State': State,
+        'City': City,
+        'Place': Place,
+        'Amenity': Amenity,
+        'Review': Review
     }
 
     def do_quit(self, arg):
-        '''Quit command to exit the program'''
+        """
+        Quit command to exit the program
+        """
         return True
 
     def do_EOF(self, arg):
-        ''' EOF signal to exit the program '''
+        """
+        EOF signal to exit the program
+        """
         print("")
         return True
 
     def help(self):
-        ''' help command '''
+        """
+        help command
+        """
         return True
 
     def emptyline(self):
-        ''' registers an empty line and does a pass '''
+        """
+        registers an empty line and does a pass
+        """
         pass
 
     def do_create(self, line):
-        ''' creates a new class instance of BaseModel'''
+        """
+        creates a new class instance of BaseModel
+        """
         command = self.parseline(line)[0]
 
         if command is None:
@@ -62,8 +74,10 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_show(self, line):
-        '''Prints the string representation of an instance
-        based on the class name and id'''
+        """
+        Prints the string representation of an instance
+        based on the class name and id
+        """
         command = line.partition(" ")
         class_name = command[0]
         class_id = command[2]
@@ -90,7 +104,9 @@ class HBNBCommand(cmd.Cmd):
             return False
 
     def do_destroy(self, line):
-        """ deletes an instance specified by user """
+        """
+        deletes an instance specified by user
+        """
         command = line.partition(" ")
         class_name = command[0]
         class_id = command[2]
@@ -118,7 +134,10 @@ class HBNBCommand(cmd.Cmd):
             return False
 
     def do_all(self, line):
-        """ prints all strin rep of instance based or not in the class name """
+        """
+        prints all string rep of instance
+        based or not in the class name
+        """
         all_list = []
 
         if line:
@@ -135,7 +154,9 @@ class HBNBCommand(cmd.Cmd):
         print(all_list)
 
     def do_update(self, line):
-        """ Updates an instance based or not in the class name """
+        """
+        Updates an instance based or not in the class name
+        """
         command = line.partition(" ")
         class_name = command[0]
         class_id = command[2]
