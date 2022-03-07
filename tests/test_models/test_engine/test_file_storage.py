@@ -12,6 +12,8 @@ class TestFileStorageClass(unittest.TestCase):
     Test FileStorage Class
     """
 
+    __file_path = None
+
 
 if __name__ == "__main__":
     unittest.main()
