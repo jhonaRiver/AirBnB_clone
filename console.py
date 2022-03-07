@@ -22,13 +22,13 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     allowed_classes = {
-        'BaseModel': BaseModel,
-        'User': User,
-        'State': State,
-        'City': City,
-        'Place': Place,
-        'Amenity': Amenity,
-        'Review': Review
+        "BaseModel": BaseModel,
+        "User": User,
+        "State": State,
+        "City": City,
+        "Place": Place,
+        "Amenity": Amenity,
+        "Review": Review
     }
 
     def do_quit(self, arg):
@@ -161,30 +161,42 @@ class HBNBCommand(cmd.Cmd):
         class_name = command[0]
         class_id = command[2]
         id_part = class_id.partition(" ")
+        class_id = id_part[0]
         email = id_part[2].partition(" ")
+        class_attr = email[0]
+        class_attr_val = email[2]
 
         if not class_name:
             print("** class name missing **")
-            return False
+            return
 
-        elif class_name not in HBNBCommand.allowed_classes:
+        if class_name not in HBNBCommand.allowed_classes:
             print("** class doesn't exist **")
-            return False
+            return
 
-        elif id_part[0] is None:
+        if not class_id:
             print("** instance id missing **")
-            return False
+            return
 
-        elif email[0] is None:
+        if class_id:
+            class_name = class_name + "." + class_id
+            if class_name not in storage.all().keys():
+                print("** no instance found **")
+                return
+
+        if not class_attr:
             print("** attribute name missing **")
-            return False
+            return
 
-        elif email[2] is None:
+        if not class_attr_val:
             print("** value missing **")
-            return False
+            return
 
-        if email[2]:
-            setattr(self, email[0], str(email[2]))
+        if class_attr:
+            for key, value in storage.all().items():
+                if class_id == value.id:
+                    setattr(value, class_attr, str(class_attr_val))
+                    storage.save()
 
 
 if __name__ == '__main__':
