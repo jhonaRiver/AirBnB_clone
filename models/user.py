@@ -4,7 +4,7 @@ from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    """ class that represents a User 
+    """ class that represents a User
     Args:
         email (str): User email
         password (str): User Password
