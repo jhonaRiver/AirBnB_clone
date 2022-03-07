@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-""" Module holds FileStorage class """
+"""
+Module holds FileStorage class
+"""
+
 from models.base_model import BaseModel
 import json
 from models.user import User
@@ -8,6 +11,7 @@ from models.state import State
 from models.amenity import Amenity
 from models.city import City
 from models.review import Review
+import os
 
 
 class FileStorage:
@@ -31,14 +35,18 @@ class FileStorage:
         """
         sets in __objects the obj with key <obj class name>.id
         """
-        object_class_name = obj.__class__.__name__
-        self.__objects["{}.{}".format(object_class_name, obj.id)] = obj
+        key = obj.__class__.__name__ + "." + obj.id
+        self.__objects[key] = obj
 
     def save(self):
         """
         serializes __objects to the JSON file (path: __file_path)
         """
         object_dictionary_save = {}
+
+        for key, value in self.__objects.items():
+            object_dictionary_save[key] = value.to_dict()
+
         with open(self.__file_path, 'w') as f:
             for key, value in self.__objects.items():
                 object_dictionary_save[key] = value.to_dict()
@@ -48,12 +56,11 @@ class FileStorage:
         """
         deserializes the JSON file to __objects, if it exists
         """
-        try:
-            with open(FileStorage.__file_path) as f:
-                object_dictionary = json.load(f)
-                for o in object_dictionary.values():
-                    class_name = o["__class__"]
-                    del o["__class__"]
-                    self.new(eval(class_name)(**o))
-        except FileNotFoundError:
-            return
+        object_dictionary_load = {}
+        isFile = os.path.isfile(self.__file_path)
+        if isFile:
+            with open(self.__file_path, 'r', encoding='utf-8') as f:
+                load = f.read()
+                new_dictionary = json.loads(load)
+                for key, value in new_dictionary.items():
+                    self.__objects[key] = eval(value["__class__"])(**value)
