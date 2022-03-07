@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" module holds entry point of command interpreter """
+"""
+module holds entry point of command interpreter
+"""
 import cmd
 
 from click import command
@@ -12,7 +14,9 @@ from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
-
+    """
+    HBNH Console
+    """
     prompt = "(hbnb) "
 
     allowed_classes = {
