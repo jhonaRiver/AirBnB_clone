@@ -62,7 +62,7 @@ class HBNBCommand(cmd.Cmd):
         """
 
         if len(line) == 0:
-            print('** class name is missing **')
+            print('** class name missing **')
 
         elif line not in HBNBCommand.allowed_classes:
             print("** class doesn't exist **")
@@ -85,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
         class_id = command[2]
 
         if not class_name:
-            print('** class name is missing **')
+            print('** class name missing **')
             return False
 
         elif class_name not in HBNBCommand.allowed_classes:
@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
             return False
 
         if not class_id:
-            print("** instance id is missing **")
+            print("** instance id missing **")
             return False
 
         key = class_name + '.' + class_id
