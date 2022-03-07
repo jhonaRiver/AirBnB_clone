@@ -37,7 +37,9 @@ class BaseModel:
     """ Public instance method """
 
     def save(self):
-        ''' saves an object to JSON file '''
+        """
+        saves an object to JSON file
+        """
         self.updated_at = datetime.utcnow()
         models.storage.save()
 
