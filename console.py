@@ -57,7 +57,8 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_show(self, line):
-        '''Prints the string representation of an instance based on the class name and id'''
+        '''Prints the string representation of an instance
+        based on the class name and id'''
         command = line.partition(" ")
         class_name = command[0]
         class_id = command[2]
